@@ -1,0 +1,63 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        # Auth Service Routes
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=0
+
+        # Rooms Service Routes
+        - id: rooms-service
+          uri: lb://rooms-service
+          predicates:
+            - Path=/api/rooms/**
+          filters:
+            - StripPrefix=0
+
+        # Guests Service Routes
+        - id: guests-service
+          uri: lb://guests-bookings-service
+          predicates:
+            - Path=/api/guests/**
+          filters:
+            - StripPrefix=0
+
+        # Bookings Service Routes
+        - id: bookings-service
+          uri: lb://guests-bookings-service
+          predicates:
+            - Path=/api/bookings/**
+          filters:
+            - StripPrefix=0
+
+        # Guest Feedback Service Routes
+        - id: form-service
+          uri: lb://form-service
+          predicates:
+            - Path=/api/feedbacks/**
+          filters:
+            - StripPrefix=0
+
+    # Load Balancer Configuration
+    loadbalancer:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
+    prefer-ip-address: true

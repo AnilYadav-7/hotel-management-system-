@@ -1,0 +1,47 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: bookings-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/bookings_db?createDatabaseIfNotExist=true
+    username: root
+    password: Anil@123
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Eureka Client Configuration
+  cloud:
+    loadbalancer:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+
+# External Services Configuration
+guests:
+  service:
+    url: http://localhost:8083
+
+rooms:
+  service:
+    url: http://localhost:8082
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 86400000
